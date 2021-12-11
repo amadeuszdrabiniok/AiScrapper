@@ -36,8 +36,11 @@ def getImage(category,inputText,iteration):
     startButton = WebDriverWait(driver,20).until(EC.element_to_be_clickable((By.XPATH,"//button[@class=\"Button-sc-1fhcnov-2 bZmxDe\"]")))
     startButton.click()
 
-    resultImage = WebDriverWait(driver,120).until(EC.element_to_be_clickable((By.XPATH,"//img[@class=\"ArtCard__CardImage-sc-bttd39-1 fHqXjT\"]")))
+    resultImage = WebDriverWait(driver,100).until(EC.element_to_be_clickable((By.XPATH,"//img[@class=\"ArtCard__CardImage-sc-bttd39-1 fHqXjT\"]")))
     resultImageSrc = resultImage.get_attribute('src')
+
+    inputText = inputText.replace(" ", "_")
+    category = category.replace(" ", "_")
 
     urllib.request.urlretrieve(resultImageSrc, f"{inputText}/{str(iteration) + inputText + category}.png")
 
@@ -56,7 +59,7 @@ threads = []
 inputText = input("Input: ")
 iterations = int(input("Iterations: "))
 
-os.mkdir(inputText)
+os.mkdir(inputText.replace(" ", "_"))
 
 for i in categories:
     for j in range(iterations):
