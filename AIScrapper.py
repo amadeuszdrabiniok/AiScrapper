@@ -10,6 +10,8 @@ import threading
 import urllib.request
 import time
 import os
+from PIL import Image
+
 
 def getImage(category,inputText,iteration):
 
@@ -18,7 +20,7 @@ def getImage(category,inputText,iteration):
     browserOptions.add_argument("--start-maximized")
     browserOptions.add_argument("--headless")
 
-    driver = webdriver.Chrome(options=browserOptions)
+    driver = webdriver.Chrome(executable_path='chromedriver',options=browserOptions)
 
     driver.get("https://app.wombo.art/")
 
@@ -38,6 +40,14 @@ def getImage(category,inputText,iteration):
     resultImageSrc = resultImage.get_attribute('src')
 
     urllib.request.urlretrieve(resultImageSrc, f"{inputText}/{str(iteration) + inputText + category}.png")
+
+    time.sleep(1)
+
+    im = Image.open(f"{inputText}/{str(iteration) + inputText + category}.png")
+    im = im.crop((65, 165, 950, 1510))
+    im.save(f"{inputText}/{str(iteration) + inputText + category}.png")
+
+
 
 
 categories = ["Mystical","Festive","Dark Fantasy","Psychic","Pastel","HD","Vibrant","Fantasy Art","Steampunk","Ukiyoe","Synthwave"]
